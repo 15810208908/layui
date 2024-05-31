@@ -113,7 +113,7 @@ layui.define(['jquery', 'laytpl', 'lay', 'util'], function (exports) {
   };
   Class.prototype.select = function (val) {
     var t = this;
-    $.each(t.config.data, function (idx) {
+    $.each(t.config.data, function () {
       if (val == this.id) {
         t.config.click(this);
         return false;

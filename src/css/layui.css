@@ -715,7 +715,7 @@ hr.layui-border-black { border-width: 0 0 1px; }
 
 
 /* 圆角 */ .layui-btn-radius { border-radius: 100px; }
-.layui-btn .layui-icon { padding: 0 2px; vertical-align: middle\0; vertical-align: bottom; }
+.layui-btn .layui-icon { padding: 0 2px; vertical-align: middle; vertical-align: bottom; }
 
 /* 原始 */ .layui-btn-primary { border-color: #d2d2d2; background: none; color: #5F5F5F; }
 .layui-btn-primary:hover { border-color: #16baaa; color: #333; }
@@ -1768,7 +1768,7 @@ body .layui-util-face .layui-layer-content { padding: 0; background-color: #fff;
 
 .layui-anim-fadeout { -webkit-animation-name: layui-fadeout; animation-name: layui-fadeout }
 
-/*增加自定义工具栏按钮及分隔符*//
+/*增加自定义工具栏按钮及分隔符*/ /
 .layui-toolbar-split { border: none; }
 .layui-toolbar-split::before { content: "|"; color: #f8f8f8; margin: 0 5px; }
 .layui-table-tool .layui-btn { height: 28px; line-height: 28px; padding: 0 8px; overflow: hidden; background-color: transparent; color: #16baaa; border-radius: 5px; }
