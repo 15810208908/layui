@@ -807,7 +807,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
     }() - that.getScrollWidth(that.layMain[0]) - 1;
 
     // 计算自动分配的宽度
-    var tmpwrap = $('<div style="position:fixed;left:0;" class="layui-table-cell"></div>').appendTo(document.body);  //临时计算宽度的容器
+    var tmpwrap = $('<div class="layui-table-cell" style="position:fixed;left:0;top:0;visibility:hidden;text-overflow:inherit;white-space:nowrap;word-break :keep-all;"></div>').appendTo(document.body);  //临时计算宽度的容器
 
     //获取最大宽度
     function getContentWidth(item2) {
@@ -826,7 +826,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
         }
         width = Math.max(width, tmpwrap.outerWidth());
       });
-      return Math.max(Math.ceil(width), item2.hd_width);
+      return Math.max(Math.ceil(width), item2.hd_width) + 1;
     }
     //计算表头宽度
 
@@ -845,7 +845,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
         if (item2.colGroup || item2.hide) return;
 
         //获取表头宽度，当列数据少的时候防止表头显示不全
-        item2.hd_width = tmpwrap.html(item2.title || "").outerWidth() || minWidth;
+        item2.hd_width = (tmpwrap.html('<span>' + (item2.title || "") + '</span>').outerWidth() || minWidth) + 1;
 
         var width = item2.org_width;
         if (width == undefined) {
@@ -866,7 +866,7 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
         totalWidth += item2.width;
       });
 
-      totalWidth = totalWidth - autoWidth + 2;
+      totalWidth = totalWidth - autoWidth;
 
       if (autotd.length && cntrWidth > totalWidth) {
         // 如果未填充满，则将剩余宽度平分
