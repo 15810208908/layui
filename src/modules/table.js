@@ -641,27 +641,36 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
       );
     } else if (typeof options.toolbar === "object") {
       $.each(options.toolbar, function () {
-        if (this == "-") {
+        var that = this;
+        if (this.constructor == Function) {
+          that = this();
+          if (!that) {
+            return true;
+          }
+        }
+        if (that == "-") {
           elemToolTemp.append('<div class="layui-inline layui-toolbar-split"></div>');
           return;
         }
 
-        if (this.text) {
-          if (this.text.constructor !== String) {
-            elemToolTemp.append(this.text);
+        if (that.text) {
+          if (that.text.constructor !== String) {
+            elemToolTemp.append(that.text);
             return;
           }
-          this.text = '<span>' + this.text + '</span>';
+          that.text = '<span>' + that.text + '</span>';
         }
-        if (this.icon) {
-          this.text = '<i class="layui-icon ' + this.icon + '"></i>' + this.text;
+        if (that.icon || that.btncls) {
+          that.text = (that.btncls ? '<i></i>' : '<i class="layui-icon ' + that.icon + '"></i>') + that.text;
         }
-        var elem = $('<button type="button" class="layui-inline layui-btn"' + (this.title ? ' title="' + this.title + '"' : '') + '>' + this.text + '</button>')
+        if (!that.btncls) {
+          that.btncls = 'layui-inline layui-btn';
+        }
+        var elem = $('<button type="button" class="' + that.btncls + '"' + (that.title ? ' title="' + that.title + '"' : '') + '>' + that.text + '</button>')
 
-        var t = this;
-        if (this.handler) {
+        if (that.handler) {
           elem.click(function () {
-            t.handler();
+            that.handler();
           });
         }
         elemToolTemp.append(elem);
@@ -2750,10 +2759,9 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
     that.layTotal.on('click', '.' + ELEM_GRID_DOWN, function (e) {
       gridExpand.call(this, e, 'tips'); // 强制采用 tips 风格
     });
-
     // 行工具条操作事件
     var toolFn = function (type) {
-      var othis = $(this), event = othis.attr('lay-event'), handler = othis.data("handler") || options[event];
+      var othis = $(this), event = othis.attr('lay-event'), handler = options[othis.data("handler") || event];
       var td = othis.closest('td'), tr = othis.parents('tr').eq(0);
       var index = parseInt(tr.attr('data-index'));
       // 标记当前活动行
@@ -2777,10 +2785,10 @@ layui.define(['lay', 'laytpl', 'laypage', 'form', 'util'], function (exports) {
     };
 
     // 行工具条单击事件
-    that.layBody.on('click', '*[lay-event]', function (e) {
+    that.layBody.on('click', '*[lay-event],*[data-handler]', function (e) {
       toolFn.call(this);
       layui.stope(e);
-    }).on('dblclick', '*[lay-event]', function (e) { //行工具条双击事件
+    }).on('dblclick', '*[lay-event],*[data-handler]', function (e) { //行工具条双击事件
       toolFn.call(this, 'toolDouble');
       layui.stope(e);
     });
